@@ -19,6 +19,14 @@ from .layered import (
     render_layered_wav,
     validate_layered_cue,
 )
+from .mix_plan import (
+    AUDIO_FABRIC_RENDER_SOURCE_KIND,
+    MIX_PLAN_SCHEMA,
+    MIX_RENDER_RECEIPT_SCHEMA,
+    PCM16_STEREO_ARTIFACT_KIND,
+    render_mix_plan_wav,
+    validate_mix_plan,
+)
 from .music_plan import (
     MUSIC_RENDER_PLAN_SCHEMA,
     MUSIC_RENDER_RECEIPT_SCHEMA,
@@ -38,6 +46,10 @@ __all__ = [
     "MUSIC_RENDER_PLAN_SCHEMA",
     "MUSIC_RENDER_RECEIPT_SCHEMA",
     "REALIZATION_PROFILE_SCHEMA",
+    "MIX_PLAN_SCHEMA",
+    "MIX_RENDER_RECEIPT_SCHEMA",
+    "AUDIO_FABRIC_RENDER_SOURCE_KIND",
+    "PCM16_STEREO_ARTIFACT_KIND",
     "AudioRecipeError",
     "build_receipt",
     "canonical_sha256",
@@ -48,9 +60,11 @@ __all__ = [
     "render_layered_wav",
     "build_music_layered_cue",
     "render_music_plan_wav",
+    "render_mix_plan_wav",
     "tick_to_milliseconds",
     "validate_atom",
     "validate_cue",
     "validate_layered_cue",
     "validate_realization_profile",
+    "validate_mix_plan",
 ]
