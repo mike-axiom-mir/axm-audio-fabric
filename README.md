@@ -62,17 +62,45 @@ source / synthesis / human recording / AI proposal
 
 Core execution should remain offline-capable where practical. AI may help generate or shape sounds, but AI output is a proposal/source, not hidden canonical truth.
 
-## Immediate proving target
+## Current executable core
 
-Build the smallest real dependency-light audio core that can:
+The first dependency-light offline proving slice is now implemented in `axm_audio/core.py`.
 
-1. create or ingest a short sound;
-2. apply an inspectable envelope/process chain;
-3. produce a deterministic cue description;
-4. trigger it from an external game-style request;
-5. export or render evidence;
-6. replay the same canonical recipe.
+It currently supports:
 
-Do not claim good sound, realism, or production quality merely because bytes were produced.
+- canonical `axm.audio-atom/v1` validation;
+- sine, square, triangle and seeded-noise sources;
+- linear frequency sweeps plus optional seeded noise mixing;
+- attack/decay/sustain/release envelopes;
+- low-pass, drive and gain effects;
+- canonical `axm.audio-cue/v1` runtime requests;
+- simple positional distance attenuation and equal-power stereo panning;
+- deterministic 16-bit stereo WAV export;
+- render receipts containing canonical cue identity, PCM hash and signal statistics;
+- replay tests proving the same recipe reproduces the same sample sequence and WAV bytes in the tested implementation.
+
+Run the tests:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Render the included procedural zap example:
+
+```bash
+python example_render.py
+```
+
+This writes `out/procedural-zap.wav` and `out/procedural-zap.receipt.json`.
+
+GitHub Actions runs both the unit suite and the render smoke test.
+
+## Truth boundary
+
+A successful render, stable hash, valid WAV, or signal measurement proves execution and replay properties only. It does **not** prove that the sound is aesthetically good, realistic, balanced, or production-ready; those claims require listening/creative evaluation.
+
+## Next meaningful gaps
+
+Do not rebuild the core. Extend it with bounded real capability, with likely next candidates including sample import, layered SFX recipes, pitch/time transforms, buses/sends, richer spatialization, or an explicit Gameplay Ability / Sound Mixer adapter.
 
 See `START_HERE_NEXT.md` and `PROJECT.json`.
