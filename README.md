@@ -64,7 +64,7 @@ Core execution should remain offline-capable where practical. AI may help genera
 
 ## Current executable core
 
-The first dependency-light offline proving slice is now implemented in `axm_audio/core.py`.
+The first dependency-light offline proving slice is implemented in `axm_audio/core.py`, with deterministic layered SFX composition in `axm_audio/layered.py`.
 
 It currently supports:
 
@@ -75,8 +75,11 @@ It currently supports:
 - low-pass, drive and gain effects;
 - canonical `axm.audio-cue/v1` runtime requests;
 - simple positional distance attenuation and equal-power stereo panning;
+- canonical `axm.audio-layered-cue/v1` recipes that combine multiple existing cues with explicit offsets and gains;
+- deterministic layered mixing with an explicit same-sample-rate boundary rather than hidden resampling;
+- clipping evidence for layered mixes via pre-clip peak and clipped-channel-sample count;
 - deterministic 16-bit stereo WAV export;
-- render receipts containing canonical cue identity, PCM hash and signal statistics;
+- render receipts containing canonical recipe identity, PCM hash and signal statistics;
 - replay tests proving the same recipe reproduces the same sample sequence and WAV bytes in the tested implementation.
 
 Run the tests:
@@ -99,8 +102,10 @@ GitHub Actions runs both the unit suite and the render smoke test.
 
 A successful render, stable hash, valid WAV, or signal measurement proves execution and replay properties only. It does **not** prove that the sound is aesthetically good, realistic, balanced, or production-ready; those claims require listening/creative evaluation.
 
+Layered v1 also deliberately refuses mixed sample rates. That is an explicit capability boundary, not a promise that resampling has occurred.
+
 ## Next meaningful gaps
 
-Do not rebuild the core. Extend it with bounded real capability, with likely next candidates including sample import, layered SFX recipes, pitch/time transforms, buses/sends, richer spatialization, or an explicit Gameplay Ability / Sound Mixer adapter.
+Do not rebuild the core. Extend it with bounded real capability, with likely next candidates including sample import with provenance, explicit resampling/pitch/time transforms, buses/sends, richer spatialization, or an explicit Gameplay Ability / Sound Mixer adapter.
 
 See `START_HERE_NEXT.md` and `PROJECT.json`.
