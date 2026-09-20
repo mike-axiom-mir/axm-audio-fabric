@@ -1,0 +1,31 @@
+{
+  "schema": "axm.project-definition/v1",
+  "id": "axm-audio-fabric",
+  "role": "audio-substrate",
+  "owns": [
+    "audio-primitives",
+    "synthesis",
+    "procedural-sfx",
+    "processing",
+    "spatial-audio",
+    "runtime-cues",
+    "audio-io",
+    "deterministic-audio-recipes"
+  ],
+  "does_not_own": [
+    "music-composition",
+    "beginner-mixer-ui",
+    "gameplay-ability-logic"
+  ],
+  "neighbors": [
+    "mike-axiom-mir/axm-music-maker",
+    "mike-axiom-mir/axm-sound-mixer",
+    "mike-axiom-mir/axm-gameplay-ability-fabric"
+  ],
+  "first_contracts": [
+    "axm.audio-atom/v1",
+    "axm.audio-cue/v1",
+    "axm.audio-process-chain/v1"
+  ],
+  "first_proof": "external request -> canonical cue -> process/render -> replay evidence"
+}
