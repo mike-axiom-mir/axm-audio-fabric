@@ -19,6 +19,15 @@ from .layered import (
     render_layered_wav,
     validate_layered_cue,
 )
+from .music_plan import (
+    MUSIC_RENDER_PLAN_SCHEMA,
+    MUSIC_RENDER_RECEIPT_SCHEMA,
+    REALIZATION_PROFILE_SCHEMA,
+    build_music_layered_cue,
+    render_music_plan_wav,
+    tick_to_milliseconds,
+    validate_realization_profile,
+)
 
 __all__ = [
     "AUDIO_ATOM_SCHEMA",
@@ -26,6 +35,9 @@ __all__ = [
     "RECEIPT_SCHEMA",
     "LAYERED_CUE_SCHEMA",
     "LAYERED_RECEIPT_SCHEMA",
+    "MUSIC_RENDER_PLAN_SCHEMA",
+    "MUSIC_RENDER_RECEIPT_SCHEMA",
+    "REALIZATION_PROFILE_SCHEMA",
     "AudioRecipeError",
     "build_receipt",
     "canonical_sha256",
@@ -34,7 +46,11 @@ __all__ = [
     "render_wav",
     "render_layered_cue",
     "render_layered_wav",
+    "build_music_layered_cue",
+    "render_music_plan_wav",
+    "tick_to_milliseconds",
     "validate_atom",
     "validate_cue",
     "validate_layered_cue",
+    "validate_realization_profile",
 ]
