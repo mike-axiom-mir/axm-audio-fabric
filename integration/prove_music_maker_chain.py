@@ -20,6 +20,12 @@ import subprocess
 import sys
 import traceback
 
+# Running a file by path sets sys.path[0] to the script directory. Add the
+# repository root explicitly so this proof executes the candidate Audio Fabric
+# package rather than depending on an installed copy or caller PYTHONPATH.
+AUDIO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(AUDIO_ROOT))
+
 from axm_audio import canonical_sha256, render_music_plan_wav
 
 
