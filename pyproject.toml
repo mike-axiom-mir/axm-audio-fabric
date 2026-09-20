@@ -1,0 +1,5 @@
+[project]
+name = "axm-audio-fabric"
+version = "0.1.0"
+description = "Dependency-light deterministic audio substrate for AXM."
+requires-python = ">=3.11"
