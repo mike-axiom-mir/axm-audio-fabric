@@ -12,6 +12,14 @@ from .core import (
     validate_atom,
     validate_cue,
 )
+from .gameplay_runtime import (
+    GAMEPLAY_AUDIO_BINDING_SCHEMA,
+    GAMEPLAY_AUDIO_EXECUTION_RECEIPT_SCHEMA,
+    GAMEPLAY_RUNTIME_CUE_REQUEST_SCHEMA,
+    render_gameplay_audio_request,
+    validate_gameplay_audio_binding,
+    validate_gameplay_audio_request,
+)
 from .layered import (
     LAYERED_CUE_SCHEMA,
     LAYERED_RECEIPT_SCHEMA,
@@ -41,6 +49,9 @@ __all__ = [
     "AUDIO_ATOM_SCHEMA",
     "AUDIO_CUE_SCHEMA",
     "RECEIPT_SCHEMA",
+    "GAMEPLAY_RUNTIME_CUE_REQUEST_SCHEMA",
+    "GAMEPLAY_AUDIO_BINDING_SCHEMA",
+    "GAMEPLAY_AUDIO_EXECUTION_RECEIPT_SCHEMA",
     "LAYERED_CUE_SCHEMA",
     "LAYERED_RECEIPT_SCHEMA",
     "MUSIC_RENDER_PLAN_SCHEMA",
@@ -56,6 +67,7 @@ __all__ = [
     "render_atom",
     "render_cue",
     "render_wav",
+    "render_gameplay_audio_request",
     "render_layered_cue",
     "render_layered_wav",
     "build_music_layered_cue",
@@ -63,6 +75,8 @@ __all__ = [
     "render_mix_plan_wav",
     "tick_to_milliseconds",
     "validate_atom",
+    "validate_gameplay_audio_request",
+    "validate_gameplay_audio_binding",
     "validate_cue",
     "validate_layered_cue",
     "validate_realization_profile",
