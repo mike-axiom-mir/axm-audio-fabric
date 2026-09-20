@@ -1,0 +1,65 @@
+name: cross-repo gameplay audio runtime proof
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gameplay-ability-to-audio-fabric:
+    runs-on: ubuntu-latest
+    env:
+      GAMEPLAY_ABILITY_REF: 654abf664a1d3e0d097ff1bb158b8e97416da5e9
+      AXM_GAMEPLAY_ABILITY_ROOT: integration/vendor/axm-gameplay-ability-fabric
+      AXM_AUDIO_PROOF_OUT: out/gameplay-audio-runtime
+    steps:
+      - name: Checkout Audio Fabric candidate
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned Gameplay Ability Fabric source
+        uses: actions/checkout@v4
+        with:
+          repository: mike-axiom-mir/axm-gameplay-ability-fabric
+          ref: ${{ env.GAMEPLAY_ABILITY_REF }}
+          path: integration/vendor/axm-gameplay-ability-fabric
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify exact Gameplay Ability Fabric checkout
+        run: test "$(git -C "$AXM_GAMEPLAY_ABILITY_ROOT" rev-parse HEAD)" = "$GAMEPLAY_ABILITY_REF"
+
+      - name: Run Audio Fabric unit suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Execute Gameplay Ability -> Audio Fabric -> bound receipt proof
+        env:
+          AXM_GAMEPLAY_ABILITY_REF: ${{ env.GAMEPLAY_ABILITY_REF }}
+        run: python integration/prove_gameplay_audio_runtime.py
+
+      - name: Require durable proof outputs
+        run: |
+          test -s "$AXM_AUDIO_PROOF_OUT/ability.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/gameplay-batch.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/gameplay-request.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/explicit-binding.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/audio-first.wav"
+          test -s "$AXM_AUDIO_PROOF_OUT/audio-first.receipt.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/audio-replay.wav"
+          test -s "$AXM_AUDIO_PROOF_OUT/audio-replay.receipt.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/audio-external-receipt.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/gameplay-bound-receipt.json"
+          test -s "$AXM_AUDIO_PROOF_OUT/proof.json"
+
+      - name: Preserve proof or failure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gameplay-ability-audio-fabric-runtime-proof-${{ github.run_id }}
+          path: out/gameplay-audio-runtime/
+          if-no-files-found: warn
