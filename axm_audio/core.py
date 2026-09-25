@@ -240,7 +240,9 @@ def render_cue(cue: dict[str, Any]) -> tuple[list[tuple[float, float]], int]:
 
 def pcm16_bytes(stereo: Iterable[tuple[float, float]]) -> bytes:
     payload = bytearray()
-    for left, right in stereo:
+    for index, (left, right) in enumerate(stereo):
+        left = _number(left, f"PCM frame {index} left")
+        right = _number(right, f"PCM frame {index} right")
         li = round(max(-1.0, min(1.0, left)) * 32767.0)
         ri = round(max(-1.0, min(1.0, right)) * 32767.0)
         payload.extend(struct.pack("<hh", li, ri))

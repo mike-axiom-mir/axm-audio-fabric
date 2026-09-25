@@ -1,9 +1,11 @@
 import tempfile
+import struct
 import unittest
 import wave
 from pathlib import Path
 
 from axm_audio import AudioRecipeError, render_atom, render_cue, render_wav
+from axm_audio.core import pcm16_bytes, build_receipt
 
 
 def atom(seed=7):
@@ -44,6 +46,20 @@ def cue(x=0):
 
 
 class AudioCoreTests(unittest.TestCase):
+    def test_nonfinite_pcm_samples_are_rejected_before_clipping(self):
+        for value in (float("nan"), float("inf"), -float("inf"), True, "0"):
+            for pair in ((value, 0.0), (0.0, value)):
+                with self.subTest(pair=pair), self.assertRaises(AudioRecipeError):
+                    pcm16_bytes([pair])
+
+    def test_invalid_samples_cannot_receive_a_render_receipt(self):
+        with self.assertRaises(AudioRecipeError):
+            build_receipt(cue(), [(float("nan"), 0.0)], 16000)
+
+    def test_finite_pcm_clipping_and_rounding_remain_unchanged(self):
+        self.assertEqual(pcm16_bytes([(-2.0, 2.0), (0.0, 0.5)]),
+                         struct.pack("<hhhh", -32767, 32767, 0, 16384))
+
     def test_same_recipe_replays_exact_float_sequence(self):
         first, sr1 = render_atom(atom())
         second, sr2 = render_atom(atom())
